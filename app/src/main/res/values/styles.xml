@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SettingsSwitch" parent="Theme.AppCompat.Light">
+        <!-- Цвет ползунка в активном состоянии -->
+        <item name="colorControlActivated">@color/blue_switch_activated</item>
+
+        <!-- Цвет ползунка в неактивном состоянии -->
+        <item name="colorSwitchThumbNormal">@color/grey_switch_normal</item>
+
+        <!-- Цвет дорожки в неактивном состоянии -->
+        <item name="android:colorForeground">@color/grey_switch_track</item>
+    </style>
+</resources>
