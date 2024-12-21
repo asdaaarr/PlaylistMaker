@@ -4,33 +4,29 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity: AppCompatActivity() {
     @SuppressLint("QueryPermissionsNeeded")
+
+    private lateinit var settingsBinding: ActivitySettingsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
 
-        val backButton = findViewById<ImageView>(R.id.btn_back)
-        val switchTheme = findViewById<SwitchMaterial>(R.id.switch_theme)
-        val shareButton = findViewById<TextView>(R.id.btn_share)
-        val supportButton = findViewById<TextView>(R.id.btn_support)
-        val agreementButton = findViewById<TextView>(R.id.btn_agreement)
+        settingsBinding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(settingsBinding.root)
 
         // Получаем текущий режим (светлый или темный)
         val currentMode = AppCompatDelegate.getDefaultNightMode()
 
         // Инициализация состояния переключателя в зависимости от текущей темы
-        switchTheme.isChecked = currentMode == AppCompatDelegate.MODE_NIGHT_YES
+        settingsBinding.switchTheme.isChecked = currentMode == AppCompatDelegate.MODE_NIGHT_YES
 
         // Обработчик изменения состояния переключателя
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+        settingsBinding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // Включить темную тему
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -40,12 +36,12 @@ class SettingsActivity: AppCompatActivity() {
             }
         }
 
-        backButton.setOnClickListener {
+        settingsBinding.btnBack.setOnClickListener {
             // Закрываем текущую активность и возвращаемся на предыдущий экран
             finish()
         }
 
-        shareButton.setOnClickListener {
+        settingsBinding.btnShare.setOnClickListener {
             val shareTitle = getString(R.string.title_share)
             val shareText = getText(R.string.text_share)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -58,7 +54,7 @@ class SettingsActivity: AppCompatActivity() {
             startActivity(chooser)
         }
 
-        supportButton.setOnClickListener {
+        settingsBinding.btnSupport.setOnClickListener {
             val supportAddressEmail = getString(R.string.address_email)
             val supportTitle = getString(R.string.title_email)
             val supportMessage = getString(R.string.text_email)
@@ -69,26 +65,14 @@ class SettingsActivity: AppCompatActivity() {
             supportIntent.putExtra(Intent.EXTRA_SUBJECT, supportTitle)
             supportIntent.putExtra(Intent.EXTRA_TEXT, supportMessage)
 
-            // Проверяем, есть ли почтовое приложение на устройстве
-            val resolveInfo = packageManager.queryIntentActivities(supportIntent, 0)
-            if (resolveInfo.isNotEmpty()) {
-                startActivity(supportIntent)
-            } else {
-                // Если почтовое приложение не найдено, выводим ошибку или уведомление
-                Toast.makeText(this, "Нет доступных почтовых приложений", Toast.LENGTH_SHORT).show()
-            }
+            startActivity(supportIntent)
         }
 
-        agreementButton.setOnClickListener {
+        settingsBinding.btnAgreement.setOnClickListener {
             val agreementLink = getString(R.string.agreement_link)
             val agreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(agreementLink))
 
-            // Проверяем, есть ли доступные браузеры для открытия ссылки
-            if (agreementIntent.resolveActivity(packageManager) != null) {
-                startActivity(agreementIntent)
-            } else {
-                Toast.makeText(this, "Нет доступных браузеров", Toast.LENGTH_SHORT).show()
-            }
+            startActivity(agreementIntent)
         }
     }
 }
