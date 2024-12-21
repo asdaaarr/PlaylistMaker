@@ -5,31 +5,29 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.internal.ViewUtils.hideKeyboard
+import androidx.core.view.isVisible
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity() {
 
     private var searchRequest: String? = null
+    private lateinit var searchBinding: ActivitySearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
 
-        val backButton = findViewById<ImageView>(R.id.btn_back)
-        val inputSearch = findViewById<EditText>(R.id.input_search)
-        val clearButton = findViewById<ImageView>(R.id.input_clear)
+        searchBinding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(searchBinding.root)
 
         // Если есть сохранённый текст, восстановить его
         savedInstanceState?.let {
             searchRequest = it.getString("search_request")
-            inputSearch.setText(searchRequest)
+            searchBinding.inputSearch.setText(searchRequest)
         }
 
-        clearButton.setOnClickListener {
-            inputSearch.setText("")
+        searchBinding.inputClear.setOnClickListener {
+            searchBinding.inputSearch.setText("")
             hideKeyboard()
         }
 
@@ -40,7 +38,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                clearButton.visibility = clearButtonVisibility(s)
+                searchBinding.inputClear.isVisible = clearButtonVisibility(s)
                 searchRequest = s.toString() // Сохраняем текущий текст
                 }
 
@@ -48,9 +46,9 @@ class SearchActivity : AppCompatActivity() {
                  // empty
                  }
              }
-        inputSearch.addTextChangedListener(simpleTextWatcher)
+        searchBinding.inputSearch.addTextChangedListener(simpleTextWatcher)
 
-        backButton.setOnClickListener {
+        searchBinding.btnBack.setOnClickListener {
             // Закрываем текущую активность и возвращаемся на предыдущий экран
             finish()
         }
@@ -70,20 +68,17 @@ class SearchActivity : AppCompatActivity() {
         searchRequest = savedInstanceState.getString("search_request")
     }
 
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
-        }
+    private fun clearButtonVisibility(s: CharSequence?): Boolean {
+        return !s.isNullOrEmpty()  // Возвращаем true, если текст не пустой
+    }
+
 
     // Функция для скрытия клавиатуры
     private fun hideKeyboard() {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         val currentFocus = currentFocus
-        if (currentFocus != null) {
-            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+        currentFocus?.let {
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
 }
