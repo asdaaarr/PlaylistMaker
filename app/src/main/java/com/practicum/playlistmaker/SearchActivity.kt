@@ -12,6 +12,8 @@ class SearchActivity : AppCompatActivity() {
 
     private var searchRequest: String? = null
     private lateinit var searchBinding: ActivitySearchBinding
+    private lateinit var trackAdapter: TrackAdapter
+
 
     val trackList = arrayListOf(
         Track(
@@ -85,11 +87,9 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-        val recyclerView = searchBinding.rvTracks
-
-        val trackAdapter = TrackAdapter(trackList)
-
-        recyclerView.adapter = trackAdapter
+        // Инициализируем адаптер
+        trackAdapter = TrackAdapter(trackList)
+        searchBinding.rvTracks.adapter = trackAdapter
     }
 
     // Сохранение состояния активности
