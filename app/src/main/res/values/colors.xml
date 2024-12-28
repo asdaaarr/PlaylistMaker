@@ -16,4 +16,5 @@
     <color name="grey_switch_normal">#AEAFB4</color>
     <color name="text_color_track_name">#000000</color>
     <color name="text_color_artist_name_track_time_icon">#AEAFB4</color>
+    <color name="search_cursor_color">#3772E7</color>
 </resources>

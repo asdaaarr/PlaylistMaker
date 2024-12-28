@@ -65,9 +65,12 @@
                 android:hint="@string/search_hint"
                 android:maxLines="1"
                 android:inputType="text"
+                android:textSize="@dimen/text_size_16"
+                android:textFontWeight="400"
                 android:textColor="@color/text_color_search_line"
                 android:textColorHint="@color/text_color_search_hint"
-                android:background="@drawable/search_background" />
+                android:background="@drawable/search_background"
+                android:textCursorDrawable="@drawable/cursor_search" />
 
         </LinearLayout>
 
