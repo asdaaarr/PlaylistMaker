@@ -65,9 +65,12 @@
                 android:hint="@string/search_hint"
                 android:maxLines="1"
                 android:inputType="text"
+                android:textSize="@dimen/text_size_16"
+                android:textFontWeight="400"
                 android:textColor="@color/text_color_search_line"
                 android:textColorHint="@color/text_color_search_hint"
-                android:background="@drawable/search_background" />
+                android:background="@drawable/search_background"
+                android:textCursorDrawable="@drawable/cursor_search" />
 
         </LinearLayout>
 
@@ -81,5 +84,15 @@
             app:tint="@color/text_color_search_hint"
             android:visibility="gone" />
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTracks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/indent_16"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        tools:listitem="@layout/track_item"
+        tools:itemCount="7"/>
 
 </LinearLayout>
